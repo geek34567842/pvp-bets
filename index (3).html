@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⚔️ PVP BETS — Geek_42 RP Server</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Rajdhani:wght@400;500;600;700&display=swap');
+
+  :root {
+    --gold: #f5c842;
+    --gold2: #e8a800;
+    --red: #c0392b;
+    --dark: #0a0a0f;
+    --dark2: #111118;
+    --dark3: #1a1a26;
+    --border: #2a2a3a;
+    --text: #d0cfe0;
+    --accent: #7b5cff;
+    --green: #27ae60;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse 80% 40% at 50% 0%, rgba(123,92,255,0.08) 0%, transparent 70%),
+      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  .header {
+    text-align: center;
+    padding: 40px 20px 20px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(to bottom, rgba(245,200,66,0.05), transparent);
+  }
+
+  .header h1 {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(1.5rem, 4vw, 2.8rem);
+    color: var(--gold);
+    text-shadow: 0 0 30px rgba(245,200,66,0.4), 0 2px 0 rgba(0,0,0,0.8);
+    letter-spacing: 2px;
+  }
+
+  .header p { font-size: 1rem; color: #888; margin-top: 6px; letter-spacing: 3px; text-transform: uppercase; }
+
+  .server-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    background: rgba(123,92,255,0.15);
+    border: 1px solid rgba(123,92,255,0.4);
+    border-radius: 20px;
+    padding: 4px 16px;
+    font-size: 0.85rem;
+    color: #a89aff;
+    letter-spacing: 1px;
+  }
+
+  .nav-tabs {
+    display: flex;
+    justify-content: center;
+    margin: 24px auto;
+    max-width: 500px;
+    background: var(--dark2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .nav-tab {
+    flex: 1;
+    padding: 12px;
+    background: transparent;
+    border: none;
+    color: #666;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+
+  .nav-tab.active { background: linear-gradient(135deg, rgba(245,200,66,0.15), rgba(245,200,66,0.05)); color: var(--gold); border-bottom: 2px solid var(--gold); }
+  .nav-tab:hover:not(.active) { color: var(--text); background: rgba(255,255,255,0.03); }
+
+  .main { max-width: 800px; margin: 0 auto; padding: 0 16px 60px; }
+
+  .panel { background: var(--dark2); border: 1px solid var(--border); border-radius: 16px; padding: 24px; margin-bottom: 20px; display: none; }
+  .panel.active { display: block; }
+
+  .panel-title { font-family: 'Cinzel Decorative', serif; font-size: 1.1rem; color: var(--gold); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+  .panel-title::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, var(--border), transparent); }
+
+  label { display: block; font-size: 0.85rem; color: #999; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+
+  input[type="text"], input[type="password"], input[type="number"] {
+    width: 100%;
+    background: var(--dark3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.1rem;
+    padding: 12px 16px;
+    transition: border-color 0.2s;
+    margin-bottom: 16px;
+  }
+  input:focus { outline: none; border-color: var(--gold); }
+
+  .btn { padding: 12px 28px; border: none; border-radius: 8px; font-family: 'Rajdhani', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
+  .btn-gold { background: linear-gradient(135deg, var(--gold), var(--gold2)); color: #000; box-shadow: 0 4px 15px rgba(245,200,66,0.3); }
+  .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(245,200,66,0.4); }
+  .btn-red { background: linear-gradient(135deg, #c0392b, #922b21); color: #fff; box-shadow: 0 4px 15px rgba(192,57,43,0.3); }
+  .btn-full { width: 100%; }
+
+  .players-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin-top: 8px; }
+
+  .player-card { background: var(--dark3); border: 2px solid var(--border); border-radius: 12px; padding: 16px 12px; text-align: center; cursor: pointer; transition: all 0.2s; }
+  .player-card:hover { border-color: var(--gold); transform: translateY(-3px); box-shadow: 0 8px 20px rgba(245,200,66,0.15); }
+
+  .player-avatar { width: 48px; height: 48px; border-radius: 8px; background: linear-gradient(135deg, var(--accent), var(--red)); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto 8px; }
+  .player-name { font-weight: 700; font-size: 1rem; color: var(--gold); word-break: break-all; }
+  .player-bets { font-size: 0.8rem; color: #666; margin-top: 4px; }
+
+  .amount-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 12px 0; }
+  .amount-btn { padding: 10px; background: var(--dark3); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: 'Rajdhani', sans-serif; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; text-align: center; }
+  .amount-btn:hover, .amount-btn.selected { border-color: var(--gold); color: var(--gold); background: rgba(245,200,66,0.08); }
+
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
+  .modal-overlay.open { display: flex; }
+
+  .modal { background: var(--dark2); border: 1px solid var(--gold); border-radius: 16px; padding: 30px; max-width: 420px; width: 100%; box-shadow: 0 0 40px rgba(245,200,66,0.15); animation: modalIn 0.25s ease; }
+  @keyframes modalIn { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+  .modal h2 { font-family: 'Cinzel Decorative', serif; color: var(--gold); font-size: 1.2rem; margin-bottom: 6px; }
+  .modal .target-name { color: #aaa; font-size: 0.95rem; margin-bottom: 20px; letter-spacing: 1px; }
+
+  .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--dark2); border: 1px solid var(--green); border-radius: 12px; padding: 14px 24px; color: var(--green); font-weight: 600; font-size: 1rem; letter-spacing: 1px; z-index: 999; transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1); text-align: center; min-width: 280px; }
+  .toast.error { border-color: var(--red); color: #e74c3c; }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  .bets-log { display: flex; flex-direction: column; gap: 10px; }
+  .bet-entry { background: var(--dark3); border-left: 3px solid var(--gold); border-radius: 0 8px 8px 0; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .bet-entry .bet-who { font-weight: 700; color: var(--text); }
+  .bet-entry .bet-target { color: var(--gold); }
+  .bet-entry .bet-amount { font-weight: 700; color: var(--green); font-size: 1.1rem; }
+  .bet-entry .bet-time { color: #555; font-size: 0.8rem; }
+
+  .empty-state { text-align: center; padding: 40px; color: #555; font-size: 1rem; letter-spacing: 1px; }
+  .divider { height: 1px; background: var(--border); margin: 16px 0; }
+
+  .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+  .stat-card { background: var(--dark3); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+  .stat-value { font-size: 1.6rem; font-weight: 700; color: var(--gold); }
+  .stat-label { font-size: 0.75rem; color: #666; text-transform: uppercase; letter-spacing: 1px; }
+
+  .admin-section { margin-bottom: 20px; }
+  .admin-players-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .admin-player-chip { display: flex; align-items: center; gap: 8px; background: var(--dark3); border: 1px solid var(--border); border-radius: 20px; padding: 6px 14px; font-size: 0.9rem; color: var(--text); }
+  .admin-player-chip button { background: none; border: none; color: var(--red); cursor: pointer; font-size: 1rem; line-height: 1; padding: 0; }
+  .admin-badge { display: inline-block; background: rgba(245,200,66,0.15); border: 1px solid var(--gold); border-radius: 6px; padding: 2px 10px; font-size: 0.75rem; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
+  .warning-box { background: rgba(192,57,43,0.1); border: 1px solid rgba(192,57,43,0.3); border-radius: 8px; padding: 12px 16px; font-size: 0.9rem; color: #e07060; margin-bottom: 16px; letter-spacing: 0.5px; }
+  .bettor-input-row { display: flex; gap: 10px; align-items: flex-start; }
+  .bettor-input-row input { margin-bottom: 0; flex: 1; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>⚔️ PVP BETS</h1>
+  <p>Serveur Minecraft RP — Event PVP</p>
+  <div class="server-badge">🟢 Geek_42 Server &nbsp;|&nbsp; Argent fictif uniquement</div>
+</div>
+
+<div class="nav-tabs">
+  <button class="nav-tab active" onclick="switchTab('bet', this)">🎲 Parier</button>
+  <button class="nav-tab" onclick="switchTab('log', this)">📜 Historique</button>
+  <button class="nav-tab" onclick="switchTab('admin', this)">🔒 Admin</button>
+</div>
+
+<div class="main">
+
+  <div class="panel active" id="tab-bet">
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-value" id="stat-players">0</div><div class="stat-label">Joueurs</div></div>
+      <div class="stat-card"><div class="stat-value" id="stat-bets">0</div><div class="stat-label">Paris</div></div>
+      <div class="stat-card"><div class="stat-value" id="stat-total">0 €</div><div class="stat-label">Mise totale</div></div>
+    </div>
+    <div class="panel-title">⚔️ Choisir un joueur</div>
+    <div class="players-grid" id="players-grid">
+      <div class="empty-state" style="grid-column:1/-1">Aucun joueur inscrit pour l'instant.<br>Les admins ajoutent les joueurs.</div>
+    </div>
+  </div>
+
+  <div class="panel" id="tab-log">
+    <div class="panel-title">📜 Historique des paris</div>
+    <div class="bets-log" id="bets-log"><div class="empty-state">Aucun pari placé pour l'instant.</div></div>
+  </div>
+
+  <div class="panel" id="tab-admin">
+    <div id="admin-lock">
+      <div class="panel-title">🔒 Accès Admin</div>
+      <div class="warning-box">⚠️ Zone réservée aux administrateurs du serveur Geek_42.</div>
+      <label>Mot de passe admin</label>
+      <input type="password" id="admin-pwd" placeholder="Mot de passe..." onkeydown="if(event.key==='Enter')checkAdmin()">
+      <button class="btn btn-gold btn-full" onclick="checkAdmin()">SE CONNECTER</button>
+    </div>
+    <div id="admin-panel" style="display:none">
+      <div class="admin-badge">✅ ADMIN CONNECTÉ</div>
+      <div class="admin-section">
+        <div class="panel-title">➕ Ajouter un joueur</div>
+        <label>Pseudo Minecraft</label>
+        <div class="bettor-input-row">
+          <input type="text" id="new-player-name" placeholder="ex: Steve123" onkeydown="if(event.key==='Enter')addPlayer()">
+          <button class="btn btn-gold" onclick="addPlayer()">AJOUTER</button>
+        </div>
+        <div class="admin-players-list" id="admin-players-list"><span style="color:#555;font-size:0.9rem">Aucun joueur encore ajouté.</span></div>
+      </div>
+      <div class="divider"></div>
+      <div class="panel-title">🗑️ Zone dangereuse</div>
+      <button class="btn btn-red" onclick="resetAll()">RÉINITIALISER TOUS LES PARIS</button>
+    </div>
+  </div>
+
+</div>
+
+<div class="modal-overlay" id="bet-modal">
+  <div class="modal">
+    <h2>💰 Placer un pari</h2>
+    <div class="target-name">Sur : <strong id="modal-player-name" style="color:var(--gold)"></strong></div>
+    <label>Votre pseudo</label>
+    <input type="text" id="bettor-name" placeholder="Votre pseudo Minecraft...">
+    <label>Montant (€ fictifs)</label>
+    <div class="amount-grid">
+      <div class="amount-btn" onclick="selectAmount(50, this)">50 €</div>
+      <div class="amount-btn" onclick="selectAmount(100, this)">100 €</div>
+      <div class="amount-btn" onclick="selectAmount(250, this)">250 €</div>
+      <div class="amount-btn" onclick="selectAmount(500, this)">500 €</div>
+      <div class="amount-btn" onclick="selectAmount(1000, this)">1 000 €</div>
+      <div class="amount-btn" onclick="selectAmount(5000, this)">5 000 €</div>
+    </div>
+    <label style="margin-top:4px">Ou saisir un montant</label>
+    <input type="number" id="custom-amount" placeholder="Montant personnalisé (€)..." min="1">
+    <div style="display:flex;gap:10px;margin-top:8px">
+      <button class="btn btn-gold" style="flex:1" onclick="confirmBet()">CONFIRMER LE PARI ⚡</button>
+      <button class="btn" style="flex:0;background:var(--dark3);color:#666;border:1px solid var(--border)" onclick="closeBetModal()">✕</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const WEBHOOK = 'https://discord.com/api/webhooks/1452323543000944791/RVvsUOhC9oD5sJAVqJrKe72Iw6CB1p8oCz-wOEcCGAnn_t7uLsh0jj4kUIpyZj22zfNB';
+  const ADMIN_PASS = 'PG2720';
+
+  let players = JSON.parse(localStorage.getItem('pvp_players') || '[]');
+  let bets = JSON.parse(localStorage.getItem('pvp_bets') || '[]');
+  let selectedPlayer = null;
+  let selectedAmount = null;
+
+  function save() {
+    localStorage.setItem('pvp_players', JSON.stringify(players));
+    localStorage.setItem('pvp_bets', JSON.stringify(bets));
+    updateStats();
+  }
+
+  function toast(msg, type='') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast ' + type + ' show';
+    setTimeout(() => t.className = 'toast ' + type, 3000);
+  }
+
+  function switchTab(tab, btn) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-'+tab).classList.add('active');
+    btn.classList.add('active');
+    if (tab === 'log') renderLog();
+  }
+
+  function fmt(n) { return n.toLocaleString('fr-FR') + ' €'; }
+
+  function updateStats() {
+    document.getElementById('stat-players').textContent = players.length;
+    document.getElementById('stat-bets').textContent = bets.length;
+    const total = bets.reduce((s, b) => s + b.amount, 0);
+    document.getElementById('stat-total').textContent = fmt(total);
+    renderPlayers();
+    renderAdminPlayers();
+  }
+
+  function renderPlayers() {
+    const grid = document.getElementById('players-grid');
+    if (players.length === 0) {
+      grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1">Aucun joueur inscrit pour l\'instant.<br>Les admins ajoutent les joueurs.</div>';
+      return;
+    }
+    grid.innerHTML = players.map(p => {
+      const nbBets = bets.filter(b => b.player === p).length;
+      const totalBets = bets.filter(b => b.player === p).reduce((s, b) => s + b.amount, 0);
+      return `<div class="player-card" onclick="openBetModal('${p}')">
+        <div class="player-avatar">⚔️</div>
+        <div class="player-name">${p}</div>
+        <div class="player-bets">${nbBets} pari${nbBets>1?'s':''} · ${fmt(totalBets)}</div>
+      </div>`;
+    }).join('');
+  }
+
+  function renderAdminPlayers() {
+    const list = document.getElementById('admin-players-list');
+    if (players.length === 0) {
+      list.innerHTML = '<span style="color:#555;font-size:0.9rem">Aucun joueur encore ajouté.</span>';
+      return;
+    }
+    list.innerHTML = players.map(p => `
+      <div class="admin-player-chip">⚔️ ${p}<button onclick="removePlayer('${p}')">✕</button></div>
+    `).join('');
+  }
+
+  function renderLog() {
+    const log = document.getElementById('bets-log');
+    if (bets.length === 0) { log.innerHTML = '<div class="empty-state">Aucun pari placé pour l\'instant.</div>'; return; }
+    log.innerHTML = [...bets].reverse().map(b => `
+      <div class="bet-entry">
+        <div><span class="bet-who">${b.bettor}</span><span style="color:#666"> a parié sur </span><span class="bet-target">${b.player}</span></div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <span class="bet-amount">${fmt(b.amount)}</span>
+          <span class="bet-time">${b.time}</span>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function checkAdmin() {
+    if (document.getElementById('admin-pwd').value === ADMIN_PASS) {
+      document.getElementById('admin-lock').style.display = 'none';
+      document.getElementById('admin-panel').style.display = 'block';
+      renderAdminPlayers();
+    } else {
+      toast('❌ Mot de passe incorrect !', 'error');
+      document.getElementById('admin-pwd').value = '';
+    }
+  }
+
+  function addPlayer() {
+    const name = document.getElementById('new-player-name').value.trim();
+    if (!name) return toast('⚠️ Entrez un pseudo !', 'error');
+    if (players.includes(name)) return toast('⚠️ Ce joueur existe déjà !', 'error');
+    players.push(name);
+    document.getElementById('new-player-name').value = '';
+    save();
+    toast(`✅ ${name} ajouté !`);
+    sendDiscord(`🛡️ **JOUEUR INSCRIT** : \`${name}\` a été ajouté à l'event PVP par un admin.`);
+  }
+
+  function removePlayer(name) {
+    if (!confirm(`Retirer ${name} de l'event ?`)) return;
+    players = players.filter(p => p !== name);
+    save();
+    toast(`🗑️ ${name} retiré.`);
+  }
+
+  function resetAll() {
+    if (!confirm('Vraiment réinitialiser TOUS les paris ?')) return;
+    bets = [];
+    save();
+    renderLog();
+    toast('🗑️ Tous les paris ont été réinitialisés.', 'error');
+  }
+
+  function openBetModal(playerName) {
+    selectedPlayer = playerName;
+    selectedAmount = null;
+    document.getElementById('modal-player-name').textContent = playerName;
+    document.getElementById('custom-amount').value = '';
+    document.getElementById('bettor-name').value = '';
+    document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
+    document.getElementById('bet-modal').classList.add('open');
+  }
+
+  function closeBetModal() {
+    document.getElementById('bet-modal').classList.remove('open');
+    selectedPlayer = null; selectedAmount = null;
+  }
+
+  function selectAmount(val, el) {
+    selectedAmount = val;
+    document.getElementById('custom-amount').value = '';
+    document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  function confirmBet() {
+    const bettor = document.getElementById('bettor-name').value.trim();
+    const customAmt = parseInt(document.getElementById('custom-amount').value);
+    const amount = customAmt > 0 ? customAmt : selectedAmount;
+    if (!bettor) return toast('⚠️ Entrez votre pseudo !', 'error');
+    if (!amount || amount <= 0) return toast('⚠️ Choisissez un montant !', 'error');
+    const now = new Date();
+    const time = now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
+    bets.push({ bettor, player: selectedPlayer, amount, time });
+    save();
+    renderLog();
+    closeBetModal();
+    toast(`✅ Pari de ${fmt(amount)} sur ${selectedPlayer} enregistré !`);
+    sendDiscord(`🎲 **NOUVEAU PARI !**\n👤 **Parieur :** \`${bettor}\`\n⚔️ **Sur :** \`${selectedPlayer}\`\n💰 **Montant :** **${fmt(amount)}** fictifs\n🕐 Heure : ${time}`);
+  }
+
+  async function sendDiscord(content) {
+    try {
+      await fetch(WEBHOOK, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: '⚔️ PVP BETS Bot',
+          embeds: [{ description: content, color: 0xf5c842, footer: { text: 'Geek_42 RP Server — Argent fictif' }, timestamp: new Date().toISOString() }]
+        })
+      });
+    } catch(e) { console.error(e); }
+  }
+
+  updateStats();
+</script>
+</body>
+</html>
